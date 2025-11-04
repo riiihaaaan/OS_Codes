@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Define the file where contacts will be stored
+ADDRESS_BOOK="my_address_book.csv"
+
+# --- Function to Show the Menu ---
+show_menu() {
+    clear
+    echo "=============================="
+    echo "  MY ADDRESS BOOK 📖"
+    echo "=============================="
+    echo "1. Add a New Contact"
+    echo "2. Display All Contacts"
+    echo "3. Search for a Contact"
+    echo "4. Delete a Contact"
+    echo "5. Exit"
+    echo "------------------------------"
+    echo -n "Please enter your choice: "
+}
+
+# --- Function to Add a New Contact ---
+add_contact() {
+    echo -n "Enter Name: "
+    read name
+    echo -n "Enter Phone Number: "
+    read phone
+    echo -n "Enter Email: "
+    read email
+
+    # Save the contact as a comma-separated line
+    echo "$name,$phone,$email" >> "$ADDRESS_BOOK"
+    
+    echo "Contact saved successfully!"
+    sleep 1
+}
+
+# --- Function to Display All Contacts ---
+display_contacts() {
+    if [ ! -f "$ADDRESS_BOOK" ] || [ ! -s "$ADDRESS_BOOK" ]; then
+        echo "Address book is empty."
+    else
+        echo "Name,Phone,Email" | column -t -s ","
+        echo "------------------------------"
+        cat "$ADDRESS_BOOK" | column -t -s ","
+    fi
+    echo -n "Press Enter to continue..."
+    read
+}
+
+# --- Function to Search for a Contact ---
+search_contact() {
+    echo -n "Enter name or email to search: "
+    read search_term
+
+    if [ ! -f "$ADDRESS_BOOK" ]; then
+        echo "Address book does not exist."
+    else
+        echo "Search Results:"
+        grep -i "$search_term" "$ADDRESS_BOOK" | column -t -s ","
+        if [ $? -ne 0 ]; then
+            echo "No contact found."
+        fi
+    fi
+    echo -n "Press Enter to continue..."
+    read
+}
+
+# --- Function to Delete a Contact ---
+delete_contact() {
+    echo -n "Enter the exact name of the contact to delete: "
+    read delete_term
+    
+    if [ ! -f "$ADDRESS_BOOK" ]; then
+        echo "Address book does not exist."
+    else
+        # Use grep -v to filter out the line to be deleted
+        # Save the result to a temporary file
+        grep -v "^$delete_term," "$ADDRESS_BOOK" > temp.csv
+        
+        # Replace the original file with the temporary file
+        mv temp.csv "$ADDRESS_BOOK"
+        
+        echo "Contact deleted successfully."
+    fi
+    echo -n "Press Enter to continue..."
+    read
+}
+
+# --- Main Program Loop ---
+while true
+do
+    show_menu
+    read choice
+
+    case $choice in
+        1)
+            add_contact
+            ;;
+        2)
+            display_contacts
+            ;;
+        3)
+            search_contact
+            ;;
+        4)
+            delete_contact
+            ;;
+        5)
+            echo "Goodbye!"
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please try again."
+            sleep 1
+            ;;
+    esac
+done
+
+# To run the script:
+# chmod +x address_book.sh
+# ./address_book.sh
