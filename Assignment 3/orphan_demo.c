@@ -1,5 +1,25 @@
-// orphan_demo.c
-// Demonstrates the orphan state.
+/*
+ * orphan_demo.c
+ * ============
+ * Demonstration of Orphan Process State in Unix Systems
+ *
+ * An orphan process is created when a parent process terminates
+ * before its child process. This program demonstrates:
+ *
+ * 1. Process Hierarchy
+ *    - Initially: child's parent is our program
+ *    - After parent exits: child is adopted by init process (PID 1)
+ *
+ * 2. Process States
+ *    - Parent: Creates child then exits immediately
+ *    - Child: Continues running, becomes orphaned
+ *    - Init: Adopts the orphaned process
+ *
+ * Key Observations:
+ * - getppid() shows different parent PIDs before/after orphaning
+ * - Init process (PID 1) automatically adopts orphaned processes
+ * - Unlike zombies, orphans don't waste system resources
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

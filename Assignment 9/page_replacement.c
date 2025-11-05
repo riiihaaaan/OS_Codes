@@ -1,9 +1,21 @@
-// page_replacement.c
-// Simulates FIFO, LRU, and Optimal page replacement algorithms.
+/*
+ * page_replacement.c
+ * ==================
+ * This program implements three different page replacement algorithms used in operating systems:
+ * 1. FIFO (First-In-First-Out): Replaces the oldest page in memory
+ * 2. LRU (Least Recently Used): Replaces the page that hasn't been used for the longest time
+ * 3. Optimal: Replaces the page that won't be used for the longest time in the future
+ *
+ * The program allows users to:
+ * - Specify the number of page frames (minimum 3)
+ * - Input a sequence of page references
+ * - View the simulation of each algorithm
+ * - Compare their performance based on page faults
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h> // For INT_MAX
+#include <limits.h> // For INT_MAX in optimal algorithm
 
 // --- Function Prototypes ---
 void run_fifo(int pages[], int n_pages, int n_frames);

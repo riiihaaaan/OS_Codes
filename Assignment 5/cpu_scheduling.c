@@ -1,21 +1,40 @@
-// cpu_scheduling.c
-// Simulates Preemptive SJF (SRTF) and Round Robin scheduling.
+/*
+ * cpu_scheduling.c
+ * ===============
+ * Implementation of CPU Scheduling Algorithms
+ * 
+ * This program simulates two popular CPU scheduling algorithms:
+ * 1. SRTF (Shortest Remaining Time First)
+ *    - Preemptive version of SJF (Shortest Job First)
+ *    - Selects process with shortest remaining time
+ *    - Can preempt running process if shorter job arrives
+ * 
+ * 2. Round Robin (RR)
+ *    - Each process gets fixed time quantum
+ *    - Process is preempted if it exceeds quantum
+ *    - Preempted process goes to end of ready queue
+ * 
+ * Performance Metrics Calculated:
+ * - Completion Time: Time when process finishes
+ * - Turnaround Time: Completion Time - Arrival Time
+ * - Waiting Time: Turnaround Time - Burst Time
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h> // For INT_MAX
+#include <limits.h> // For INT_MAX in finding minimum remaining time
 
-// Structure to hold process information
+/* Process Control Block (PCB) Structure */
 typedef struct {
-    int id;
-    int arrival_time;
-    int burst_time;
+    int id;              // Process identifier
+    int arrival_time;    // Time process arrives in system
+    int burst_time;      // Total CPU time required
     
-    // Helper fields for calculation
-    int remaining_time;
-    int completion_time;
-    int turnaround_time;
-    int waiting_time;
+    /* Metrics for analysis */
+    int remaining_time;   // Time still needed to complete
+    int completion_time; // Time when process finishes
+    int turnaround_time; // Total time in system
+    int waiting_time;    // Time spent waiting
 } Process;
 
 // Function Prototypes

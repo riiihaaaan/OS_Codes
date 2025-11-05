@@ -1,10 +1,30 @@
-// fork_wait_zombie.c
-// Demonstrates fork(), wait(), and the zombie state.
+/*
+ * fork_wait_zombie.c
+ * =================
+ * Demonstration of Process Creation, Termination and Zombie State
+ *
+ * This program illustrates three important Unix process concepts:
+ * 1. Process Creation (fork)
+ *    - Creates a new child process that is a copy of the parent
+ *    - Parent and child execute concurrently
+ *
+ * 2. Process Termination (exit)
+ *    - Child process terminates early while parent continues
+ *    - If parent hasn't called wait(), child becomes zombie
+ *
+ * 3. Zombie Process State
+ *    - Process that has terminated but whose exit status 
+ *      hasn't been collected by its parent
+ *    - Still consumes system resources until "reaped"
+ *
+ * Note: Run 'ps -ef | grep <PID>' in another terminal during
+ * the sleep period to observe the zombie process state
+ */
 
 #include <stdio.h>
-#include <stdlib.h>     // For exit()
+#include <stdlib.h>     // For exit() function
 #include <unistd.h>     // For fork(), sleep(), getpid()
-#include <sys/wait.h>   // For wait()
+#include <sys/wait.h>   // For wait() function
 
 int main() {
     pid_t pid; // Variable to store process ID

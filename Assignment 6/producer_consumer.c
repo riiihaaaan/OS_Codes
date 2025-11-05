@@ -1,6 +1,24 @@
-// producer_consumer.c
-// Demonstrates the Producer-Consumer problem using pthreads,
-// a mutex, and counting semaphores.
+/*
+ * producer_consumer.c
+ * =================
+ * Implementation of the Classical Producer-Consumer Problem
+ * 
+ * This program demonstrates process synchronization using:
+ * 1. Mutex Lock: For mutual exclusion when accessing the buffer
+ * 2. Semaphores: For keeping track of full and empty buffer slots
+ * 
+ * Problem Description:
+ * - Producer produces items and puts them in a bounded buffer
+ * - Consumer removes items from the buffer and consumes them
+ * - Buffer has limited size (BUFFER_SIZE)
+ * - Producer must wait if buffer is full
+ * - Consumer must wait if buffer is empty
+ * 
+ * Synchronization Mechanisms:
+ * - mutex: Ensures mutual exclusion for buffer access
+ * - empty: Counts empty buffer slots (initially BUFFER_SIZE)
+ * - full: Counts filled buffer slots (initially 0)
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,18 +26,18 @@
 #include <semaphore.h>  // For semaphores
 #include <unistd.h>     // For sleep()
 
-#define BUFFER_SIZE 5   // Size of the shared buffer
-#define MAX_ITEMS 10    // How many items to produce/consume
+/* Buffer Configuration */
+#define BUFFER_SIZE 5   // Size of the circular buffer
+#define MAX_ITEMS 10    // Total items to produce/consume
 
-// --- Shared Resources ---
-int buffer[BUFFER_SIZE];
-int in = 0;  // Index for producer to write
-int out = 0; // Index for consumer to read
+/* Shared Resources and Synchronization Objects */
+int buffer[BUFFER_SIZE];     // Circular buffer for data
+int in = 0;                  // Producer's insertion index
+int out = 0;                // Consumer's extraction index
 
-pthread_mutex_t mutex;  // Mutex for buffer access
-sem_t empty;            // Semaphore for empty slots
-sem_t full;             // Semaphore for full slots
-// ------------------------
+pthread_mutex_t mutex;       // Protects buffer access
+sem_t empty;                // Tracks empty buffer slots
+sem_t full;                 // Tracks filled buffer slots
 
 /**
  * @brief The Producer thread function.

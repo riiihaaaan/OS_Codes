@@ -1,5 +1,28 @@
-// execve_demo.c
-// Demonstrates the execve() system call.
+/*
+ * execve_demo.c
+ * ============
+ * Demonstration of Process Image Replacement using execve()
+ *
+ * The execve() system call loads a new program into the current
+ * process's memory space, completely replacing the current program.
+ *
+ * Key Concepts:
+ * 1. Process Transformation
+ *    - Same process ID (PID)
+ *    - New program code and data
+ *    - Original program is completely gone
+ *
+ * 2. execve() Parameters
+ *    - pathname: Full path to the new program
+ *    - argv: Array of argument strings
+ *    - envp: Array of environment variables
+ *
+ * 3. Process State
+ *    - On success: Current program vanishes
+ *    - On failure: Returns -1, original program continues
+ *
+ * Example: This program replaces itself with 'ls -l'
+ */
 
 #include <stdio.h>
 #include <unistd.h>     // For execve(), getpid()

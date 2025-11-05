@@ -1,12 +1,27 @@
-// bankers_algorithm.c
-// Implements the Banker's Algorithm for deadlock avoidance,
-// including the Safety Algorithm and Resource-Request Algorithm.
+/*
+ * bankers_algorithm.c
+ * ==================
+ * Implementation of Dijkstra's Banker's Algorithm for Deadlock Avoidance
+ * 
+ * This program simulates a banking system that ensures a safe state
+ * for resource allocation, preventing deadlocks in an operating system.
+ * It implements:
+ * 1. Safety Algorithm: Determines if the system is in a safe state
+ * 2. Resource-Request Algorithm: Handles new resource requests safely
+ *
+ * Key Concepts:
+ * - Available: Resources available for allocation
+ * - Max: Maximum resources a process can request
+ * - Allocation: Resources currently allocated to processes
+ * - Need: Remaining resources a process may need (Max - Allocation)
+ */
 
 #include <stdio.h>
 #include <stdbool.h>
 
-#define MAX_PROCESSES 10
-#define MAX_RESOURCES 10
+/* Constants for maximum array sizes */
+#define MAX_PROCESSES 10  // Maximum number of processes
+#define MAX_RESOURCES 10  // Maximum number of resource types
 
 // --- Function Prototypes ---
 void get_input(int *n, int *m, int allocation[][MAX_RESOURCES], int max[][MAX_RESOURCES], int available[]);

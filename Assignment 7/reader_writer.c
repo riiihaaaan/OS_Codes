@@ -1,18 +1,33 @@
-// reader_writer.c
-// Demonstrates the Reader-Writer problem with Reader Priority
-// using pthreads and two mutexes.
+/*
+ * reader_writer.c
+ * ==============
+ * Implementation of the Classical Readers-Writers Problem with Reader Priority
+ *
+ * Problem Description:
+ * - Multiple readers can read data simultaneously
+ * - Only one writer can write at a time
+ * - No reader can read while a writer is writing
+ * - Writers must wait for all readers to finish
+ * 
+ * Solution Implementation:
+ * - Uses pthreads for concurrent execution
+ * - Uses two mutex locks for synchronization:
+ *   1. mutex: Protects the reader count
+ *   2. rw_mutex: Controls access to shared data
+ * - Implements reader priority (readers get preference over writers)
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
 
-// --- Shared Resources ---
-int shared_data = 10; // The data all threads access
-int read_count = 0;   // Number of readers currently active
-pthread_mutex_t mutex;    // Mutex to protect 'read_count'
-pthread_mutex_t rw_mutex; // Mutex to protect 'shared_data'
-// ------------------------
+/* --- Shared Resources and Synchronization Objects --- */
+int shared_data = 10;     // The shared resource that threads will access
+int read_count = 0;       // Tracks number of active readers
+pthread_mutex_t mutex;    // Controls access to read_count
+pthread_mutex_t rw_mutex; // Controls access to shared_data
+/* -------------------------------------------------- */
 
 /**
  * @brief The Writer thread function.

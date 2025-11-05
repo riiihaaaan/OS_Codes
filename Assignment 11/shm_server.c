@@ -1,15 +1,38 @@
-// shm_server.c
-// Creates, attaches, and writes to a shared memory segment.
+/*
+ * shm_server.c
+ * ===========
+ * Implementation of Shared Memory IPC - Server Side
+ *
+ * This program demonstrates System V shared memory operations:
+ * 1. Creation of shared memory segment
+ * 2. Attachment to process address space
+ * 3. Writing data to shared memory
+ * 4. Synchronization with client
+ * 5. Cleanup of shared memory resources
+ *
+ * Shared Memory Workflow:
+ * - Server creates and attaches to shared memory
+ * - Server writes data to shared memory
+ * - Server waits for client to read (polls for '*')
+ * - Server detaches and removes shared memory
+ *
+ * Key System Calls:
+ * - ftok(): Creates unique IPC key
+ * - shmget(): Creates/accesses shared memory
+ * - shmat(): Attaches shared memory
+ * - shmdt(): Detaches shared memory
+ * - shmctl(): Controls shared memory operations
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ipc.h>    // For IPC (Inter-Process Communication)
 #include <sys/shm.h>    // For shared memory functions
-#include <sys/types.h>
+#include <sys/types.h>  // For system types like key_t
 #include <unistd.h>     // For sleep()
 
-#define SHM_SIZE 1024  // 1 KB
+#define SHM_SIZE 1024   // Shared memory size (1 KB)
 
 int main() {
     key_t key;

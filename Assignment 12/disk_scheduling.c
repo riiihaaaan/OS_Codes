@@ -1,14 +1,36 @@
-// disk_scheduling.c
-// Simulates SSTF, SCAN, and C-LOOK disk scheduling algorithms.
+/*
+ * disk_scheduling.c
+ * ===============
+ * Implementation of Disk Scheduling Algorithms
+ *
+ * This program simulates three disk scheduling algorithms:
+ * 1. SSTF (Shortest Seek Time First)
+ *    - Selects request with minimum seek time from current position
+ *    - Can cause starvation for far requests
+ *
+ * 2. SCAN (Elevator Algorithm)
+ *    - Head moves in one direction until end, then reverses
+ *    - Like an elevator moving up and down
+ *    - Prevents starvation
+ *
+ * 3. C-LOOK
+ *    - Like SCAN but jumps back to start without serving reverse
+ *    - More efficient than SCAN for heavy one-sided traffic
+ *
+ * Metrics:
+ * - Total head movement (tracks)
+ * - Seek sequence visualization
+ * - Average seek time can be calculated from total movement
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h> // For INT_MAX
+#include <limits.h> // For INT_MAX in finding minimum seek time
 
-// --- Function Prototypes ---
-void run_sstf(int requests[], int n, int head);
-void run_scan(int requests[], int n, int head, int disk_size);
-void run_clook(int requests[], int n, int head);
+/* Function Prototypes */
+void run_sstf(int requests[], int n, int head);    // Shortest Seek Time First
+void run_scan(int requests[], int n, int head, int disk_size);  // Elevator
+void run_clook(int requests[], int n, int head);   // Circular LOOK
 
 // Comparison function for qsort
 int compare(const void* a, const void* b) {
