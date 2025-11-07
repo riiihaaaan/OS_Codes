@@ -36,10 +36,10 @@ add_contact() {
 
 # --- Function to Display All Contacts ---
 display_contacts() {
-    if [ ! -f "$ADDRESS_BOOK" ] || [ ! -s "$ADDRESS_BOOK" ]; then
+    if [ ! -f "$ADDRESS_BOOK" ] || [ ! -s "$ADDRESS_BOOK" ]; then # Check if the file exists and is not empty
         echo "Address book is empty."
     else
-        echo "Name,Phone,Email" | column -t -s ","
+        echo "Name,Phone,Email" | column -t -s "," # -t and -s mean to format the output in columns
         echo "------------------------------"
         cat "$ADDRESS_BOOK" | column -t -s ","
     fi
@@ -56,7 +56,7 @@ search_contact() {
         echo "Address book does not exist."
     else
         echo "Search Results:"
-        grep -i "$search_term" "$ADDRESS_BOOK" | column -t -s ","
+        grep -i "$search_term" "$ADDRESS_BOOK" | column -t -s "," # -i means case-insensitive search
         if [ $? -ne 0 ]; then
             echo "No contact found."
         fi
