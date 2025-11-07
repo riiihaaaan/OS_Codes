@@ -1,5 +1,11 @@
 #!/bin/bash
 
+ADDRESS_BOOK = "my_address_book.csv"
+
+show_menu(){
+	clear
+	#!/bin/bash
+
 # Define the file where contacts will be stored
 ADDRESS_BOOK="my_address_book.csv"
 
@@ -36,10 +42,10 @@ add_contact() {
 
 # --- Function to Display All Contacts ---
 display_contacts() {
-    if [ ! -f "$ADDRESS_BOOK" ] || [ ! -s "$ADDRESS_BOOK" ]; then # Check if the file exists and is not empty
+    if [ ! -f "$ADDRESS_BOOK" ] || [ ! -s "$ADDRESS_BOOK" ]; then
         echo "Address book is empty."
     else
-        echo "Name,Phone,Email" | column -t -s "," # -t and -s mean to format the output in columns
+        echo "Name,Phone,Email" | column -t -s ","
         echo "------------------------------"
         cat "$ADDRESS_BOOK" | column -t -s ","
     fi
@@ -56,7 +62,7 @@ search_contact() {
         echo "Address book does not exist."
     else
         echo "Search Results:"
-        grep -i "$search_term" "$ADDRESS_BOOK" | column -t -s "," # -i means case-insensitive search
+        grep -i "$search_term" "$ADDRESS_BOOK" | column -t -s ","
         if [ $? -ne 0 ]; then
             echo "No contact found."
         fi
@@ -118,4 +124,6 @@ done
 
 # To run the script:
 # chmod +x address_book.sh
-# ./address_book.sh
+# ./address_book.shecho ""
+
+}
